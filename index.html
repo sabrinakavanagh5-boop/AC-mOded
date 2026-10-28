@@ -332,6 +332,7 @@
                 <div class="mod-item">
                     <span>Infect Room / Lobby</span>
                     <label class="switch">
+Use code with caution.
 Disconnect Lag Switch
 Page 3 // Visuals & Chams
 Player Box ESP
@@ -435,4 +436,739 @@ pushLog("WebXR Mod Menu hidden. Press X again to wake pipeline loop.");
 }
 }
 
- 
+
+
+<FollowUp>
+Now that the tags are fixed and structured properly, let me know if you would like to adjust the **scrolling grid height** or map out **more custom hack items**!
+</FollowUp>
+AI responses may include mistakes. Learn more
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Company WebXR Mod Menu [xgills-style]</title>
+    <style>
+        :root {
+            --bg-main: #05070a;
+            --bg-panel: #0d1117;
+            --accent-neon: #00ff66;
+            --accent-glow: rgba(0, 255, 102, 0.2);
+            --text-main: #e2e8f0;
+            --text-muted: #64748b;
+            --border-color: #1e293b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #111;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .mod-menu-container {
+            width: 320px;
+            background-color: var(--bg-main);
+            border: 2px solid var(--accent-neon);
+            border-radius: 12px;
+            box-shadow: 0 0 20px var(--accent-glow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-header {
+            background-color: var(--bg-panel);
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-neon);
+        }
+
+        .status-pill {
+            font-size: 0.7rem;
+            background-color: rgba(0, 255, 102, 0.1);
+            color: var(--accent-neon);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--accent-neon);
+        }
+
+        .controller-trigger {
+            background: #161b22;
+            padding: 8px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+        .controller-trigger strong {
+            color: var(--text-main);
+        }
+
+        .menu-body {
+            padding: 12px;
+            flex-grow: 1;
+            min-height: 280px;
+        }
+
+        .mod-page {
+            display: none;
+        }
+
+        .mod-page.active {
+            display: block;
+        }
+
+        .page-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .mod-item {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .mod-item:hover {
+            border-color: var(--accent-neon);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #21262d;
+            transition: .2s;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 2px;
+            bottom: 2px;
+            background-color: var(--text-muted);
+            transition: .2s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: rgba(0, 255, 102, 0.2);
+            border-color: var(--accent-neon);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(16px);
+            background-color: var(--accent-neon);
+        }
+
+        .spawning-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-top: 5px;
+        }
+
+        .spawning-grid::-webkit-scrollbar {
+            width: 4px;
+        }
+        .spawning-grid::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 2px;
+        }
+        .spawning-grid::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-neon);
+        }
+
+        .spawn-btn {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            text-align: left;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .spawn-btn:hover {
+            border-color: var(--accent-neon);
+            background-color: rgba(0, 255, 102, 0.05);
+        }
+
+        .spawn-btn:active {
+            background-color: rgba(0, 255, 102, 0.15);
+        }
+
+        .menu-footer {
+            background-color: var(--bg-panel);
+            padding: 10px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: #161b22;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: var(--accent-neon);
+            color: var(--accent-neon);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .page-indicator {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--text-muted);
+        }
+
+        .log-ticker {
+            background: #020406;
+            border-top: 1px solid var(--border-color);
+            padding: 6px 10px;
+            font-family: monospace;
+            font-size: 0.65rem;
+            color: #58a6ff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mod-menu-container" id="modMenu">
+        <div class="menu-header">
+            <span class="menu-title">xgills client v1.4</span>
+            <span class="status-pill" id="statusPill">ACTIVE</span>
+        </div>
+
+        <div class="controller-trigger" id="mockXButton">
+            [Left Controller] Press <strong>X Button</strong> to Toggle Menu
+        </div>
+
+        <div class="menu-body">
+            
+            <!-- Page 1 -->
+            <div class="mod-page active" data-page="1">
+                <div class="page-title">Page 1 // Movement Hacks</div>
+                
+                <div class="mod-item">
+                    <span>Joystick Fly</span>
+                    <label class="switch">
+                        <input type="checkbox" onchange="triggerMod('Joystick Fly', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="mod-item">
+                    <span>Hand Fly / Glide</span>
+                    <label class="switch">
+                        <input type="checkbox" onchange="triggerMod('Hand Fly', this.checke
+
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Company WebXR Mod Menu [xgills-style]</title>
+    <style>
+        :root {
+            --bg-main: #05070a;
+            --bg-panel: #0d1117;
+            --accent-neon: #00ff66;
+            --accent-glow: rgba(0, 255, 102, 0.2);
+            --text-main: #e2e8f0;
+            --text-muted: #64748b;
+            --border-color: #1e293b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #111;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .mod-menu-container {
+            width: 320px;
+            background-color: var(--bg-main);
+            border: 2px solid var(--accent-neon);
+            border-radius: 12px;
+            box-shadow: 0 0 20px var(--accent-glow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-header {
+            background-color: var(--bg-panel);
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-neon);
+        }
+
+        .status-pill {
+            font-size: 0.7rem;
+            background-color: rgba(0, 255, 102, 0.1);
+            color: var(--accent-neon);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--accent-neon);
+        }
+
+        .controller-trigger {
+            background: #161b22;
+            padding: 8px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+        .controller-trigger strong {
+            color: var(--text-main);
+        }
+
+        .menu-body {
+            padding: 12px;
+            flex-grow: 1;
+            min-height: 280px;
+        }
+
+        .mod-page {
+            display: none;
+        }
+
+        .mod-page.active {
+            display: block;
+        }
+
+        .page-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .mod-item {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .mod-item:hover {
+            border-color: var(--accent-neon);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #21262d;
+            transition: .2s;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 2px;
+            bottom: 2px;
+            background-color: var(--text-muted);
+            transition: .2s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: rgba(0, 255, 102, 0.2);
+            border-color: var(--accent-neon);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(16px);
+            background-color: var(--accent-neon);
+        }
+
+        .spawning-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-top: 5px;
+        }
+
+        .spawning-grid::-webkit-scrollbar {
+            width: 4px;
+        }
+        .spawning-grid::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 2px;
+        }
+        .spawning-grid::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-neon);
+        }
+
+        .spawn-btn {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            text-align: left;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .spawn-btn:hover {
+            border-color: var(--accent-neon);
+            background-color: rgba(0, 255, 102, 0.05);
+        }
+
+        .spawn-btn:active {
+            background-color: rgba(0, 255, 102, 0.15);
+        }
+
+        .menu-footer {
+            background-color: var(--bg-panel);
+            padding: 10px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: #161b22;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: var(--accent-neon);
+            color: var(--accent-neon);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .page-indicator {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--text-muted);
+        }
+
+        .log-ticker {
+            background: #020406;
+            border-top: 1px solid var(--border-color);
+            padding: 6px 10px;
+            font-family: monospace;
+            font-size: 0.65rem;
+            color: #58a6ff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mod-menu-container" id="modMenu">
+        <div class="menu-header">
+            <span class="menu-title">xgills client v1.4</span>
+            <span class="status-pill" id="statusPill">ACTIVE</span>
+        </div>
+
+        <div class="controller-trigger" id="mockXButton">
+            [Left Controller] Press <strong>X Button</strong> to Toggle Menu
+        </div>
+
+        <div class="menu-body">
+            
+            <!-- Page 1 -->
+            <div class="mod-page active" data-page="1">
+                <div class="page-title">Page 1 // Movement Hacks</div>
+                
+                <div class="mod-item">
+                    <span>Joystick Fly</span>
+                    <label class="switch">
+                        <input type="checkbox" onchange="triggerMod('Joystick Fly', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="mod-item">
+                    <span>Hand Fly / Glide</span>
+                    <label class="switch">
+                        <input type="checkbox" onchange="triggerMod('Hand Fly', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="mod-item">
+                    <span>Mega Long Arms</span>
+                    <label class="switch">
+                        <input type="checkbox" onchange="triggerMod('Long Arms', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="mod-item">
+                    <span>VR Platforms (Grip)</span>
+                    <label class="switch">
+                        <input type="checkbox" onchange="triggerMod('Platforms', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Page 2 -->
+            <div class="mod-page" data-page="2">
+                <div class="page-title">Page 2 // Exploits & RPC</div>
+                
+                <div class="mod-item">
+                    <span>Infinite Ammo</span>
+                    <label class="switch">
+                        <input type="checkbox" onchange="triggerMod('Inf Ammo', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="mod-item">
+                    <span>No Clip Colliders</span>
+                    <label class="switch">
+                        <input type="checkbox" onchange="triggerMod('No Clip', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="mod-item">
+                    <span>Infect Room / Lobby</span>
+                    <label class="switch">
+Use code with caution.
+Disconnect Lag Switch
+Page 3 // Visuals & Chams
+Player Box ESP
+Monster Skeleton Tracer
+Scrap Item Highlight
+Full Bright Nightvision
+Page 4 // Spawning Engine
+Equip Spawning Gun
+🔫 Shotgun
+🪝 Hookshot
+🌀 Teleport Gun
+🚀 RPG Launcher
+🔦 Pro Flashlight
+💣 Stun Grenade
+🏆 Gold Statue
+🥾 Scrap Boots
+🔋 Uranium Cell
+💎 Sapphire Gem
+🤖 Toy Robot
+🪙 Golden Bar
+🐌 Spawn Snail
+🐊 Spawn Snapper
+
+BACK
+PG 1 / 4
+NEXT
+[System]: Menu initialized. Awaiting user input hooks...
+
+let state = {
+activePage: 1,
+maxPages: 4,
+isMenuOpen: true,
+spawningGunActive: false
+};
+function navigatePage(direction) {
+state.activePage += direction;
+if(state.activePage < 1) state.activePage = 1;
+if(state.activePage > state.maxPages) state.activePage = state.maxPages;
+document.querySelectorAll('.mod-page').forEach(page => {
+page.classList.remove('active');
+if(parseInt(page.getAttribute('data-page')) === state.activePage) {
+page.classList.add('active');
+}
+});
+document.getElementById('pageCounter').innerText = PG ${state.activePage} / ${state.maxPages};
+document.getElementById('prevBtn').disabled = (state.activePage === 1);
+document.getElementById('nextBtn').disabled = (state.activePage === state.maxPages);
+pushLog(Swapped layout viewpoint to Module Page [${state.activePage}]);
+}
+function triggerMod(modName, isEnabled) {
+const status = isEnabled ? "ENABLED" : "DISABLED";
+pushLog(Offset patches injected: ${modName} -> ${status});
+}
+function toggleSpawningGun(isActive) {
+state.spawningGunActive = isActive;
+if(isActive) {
+pushLog("Spawning Gun armed! Click any item node below to fire asset.");
+} else {
+pushLog("Spawning Gun component offline.");
+}
+}
+function fireItemSpawn(itemName) {
+if(!state.spawningGunActive) {
+pushLog([Error]: Must turn on Spawning Gun to inject ${itemName}!);
+return;
+}
+pushLog([RPC Injected]: Spawned 3D ${itemName} asset at Raycast hit location.);
+}
+function pushLog(message) {
+const ticker = document.getElementById('consoleLog');
+ticker.innerText = > ${message};
+console.log([xgills-client]: ${message});
+}
+document.addEventListener('keydown', function(event) {
+if (event.key === 'x' || event.key === 'X') {
+toggleMenuVisibility();
+}
+});
+document.getElementById('mockXButton').addEventListener('click', function() {
+toggleMenuVisibility();
+});
+function toggleMenuVisibility() {
+state.isMenuOpen = !state.isMenuOpen;
+const menuBody = document.querySelector('.menu-body');
+const menuFooter = document.querySelector('.menu-footer');
+const statusPill = document.getElementById('statusPill');
+if(state.isMenuOpen) {
+menuBody.style.display = 'block';
+menuFooter.style.display = 'flex';
+statusPill.innerText = "ACTIVE";
+statusPill.style.color = "var(--accent-neon)";
+statusPill.style.borderColor = "var(--accent-neon)";
+pushLog("WebXR Mod Menu panel overlay opened.");
+} else {
+menuBody.style.display = 'none';
+menuFooter.style.display = 'none';
+statusPill.innerText = "HIDDEN";
+statusPill.style.color = "var(--text-muted)";
+statusPill.style.borderColor = "var(--border-color)";
+pushLog("WebXR Mod Menu hidden. Press X again to wake pipeline loop.");
+}
+}
